@@ -113,7 +113,7 @@ class Source:
                 r"^(\d{1,2}\s?x\s?)([A-Za-z\/]*)(\s*\d{1,4}L)?$",
                 elements[0].contents[0].strip(),
             )
-            container_type = result.groups()[1].upper()
+            container_type = result.groups()[1]
 
             for idx, element in enumerate(elements[1:]):
                 for subelement in element.contents:
@@ -128,7 +128,7 @@ class Source:
                             date=months[idx]
                             + datetime.timedelta(days=int(subelement.strip()) - 1),
                             t=container_type,
-                            icon=ICON_MAP.get(container_type),
+                            icon=ICON_MAP.get(container_type.upper()),
                         )
                     )
         return entries
