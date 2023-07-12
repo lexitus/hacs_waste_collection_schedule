@@ -38,7 +38,7 @@ waste_collection_schedule:
 
 Go to the page for either [Odder](https://odder.netdialog.renosyd.dk/citizen/) or [Skanderborg](https://skanderborg.netdialog.renosyd.dk/citizen/). Select your street and then house/apartment number. Select "husk min adresse", and then select "Næste...".
 
-Now the house number is saved as a cookie. Open developer tools (right-click-> inspect in Firefox), and look at the cookies (in Storage in Firefox). There should be a single cookie storing a "StoredAddress" value - the house number - and a session id which you can ignore.
+Now the house number is saved as a cookie. Open developer tools (right-click-> inspect in Firefox), and look at the cookies (in Storage in Firefox). There should be a single cookie storing a "StoredAddress" value - the house id number - and a session id which you can ignore.
 
 ### Filtering Example
 
