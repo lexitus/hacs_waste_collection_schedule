@@ -1,7 +1,8 @@
 import requests, re, time, datetime
 from bs4 import BeautifulSoup, NavigableString
 from dateutil import parser
-from waste_collection_schedule import Collection
+from waste_collection_schedule import Collection  # type: ignore[attr-defined]
+from typing import List
 
 TITLE = "Renosyd"
 DESCRIPTION = "Renosyd collections for Skanderborg and Odder kommunes"
@@ -26,7 +27,7 @@ ICON_MAP = {
     "PAPIR/PAP": "mdi:note-multiple",
     "EMBALLAGE": "mdi:recycle",
     "STORSKRALD": "mdi:dump-truck",
-    "HAVEAFFALD": "mdi:leaf",
+    "HAVEAFFALD": "mdi:leaf", # Uncertain about this name, can't find an example
 }
 
 DANISH_MONTHS = [
@@ -47,7 +48,7 @@ DANISH_MONTHS = [
 
 
 class Source:
-    def __init__(self, kommune, husnummer):
+    def __init__(self, kommune: str, husnummer: int):
         self._kommune = kommune
         self._husnummer = husnummer
         self._api_url = (
@@ -56,7 +57,7 @@ class Source:
             + ".netdialog.renosyd.dk/citizen/default.aspx"
         )
 
-    def fetch(self):
+    def fetch(self) -> List[Collection]:
         session = requests.Session()
 
         session.headers = {
@@ -82,8 +83,6 @@ class Source:
 
         binfo = session.post(self._api_url, data=data)
         binfo.raise_for_status()
-
-        import pdb
 
         binfo_soup = BeautifulSoup(binfo.text, "html.parser")
 
@@ -113,6 +112,9 @@ class Source:
                 r"^(\d{1,2}\s?x\s?)([A-Za-z\/]*)(\s*\d{1,4}L)?$",
                 elements[0].contents[0].strip(),
             )
+            if result is None:
+                continue
+
             container_type = result.groups()[1]
 
             for idx, element in enumerate(elements[1:]):
